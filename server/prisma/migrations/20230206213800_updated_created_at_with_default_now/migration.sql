@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "muscleGroups" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "workouts" ALTER COLUMN "created_at" SET DEFAULT CURRENT_TIMESTAMP;

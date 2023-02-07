@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model DayRegistry {
+  date      DateTime @unique
+  workout   Workout  @relation(references: [id], fields: [workoutId])
+  workoutId String
+  details   String?
+
+  @@map("dayRegistries")
+}
+
+model Workout {
+  id            String        @id @unique
+  title         String
+  muscleGroup   MuscleGroup[]
+  dayRegistries DayRegistry[]
+  created_at    DateTime      @default(now())
+
+  @@map("workouts")
+}
+
+model MuscleGroup {
+  id         String    @id @unique
+  name       String
+  workouts   Workout[]
+  created_at DateTime  @default(now())
+
+  @@map("muscleGroups")
+}
