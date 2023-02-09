@@ -4,7 +4,12 @@ import { TimerScreen } from "./src/domains/timer/screens/TimerScreen";
 import { LinearTitle } from "./src/components/LinearTitle";
 import { HomeScreen } from "./src/screens/HomeScreen";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackNavigatorTypes>();
+
+export type RootStackNavigatorTypes = {
+	Home: undefined;
+	Timer: undefined;
+};
 
 export default function App() {
 	return (

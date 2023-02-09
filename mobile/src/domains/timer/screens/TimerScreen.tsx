@@ -9,6 +9,9 @@ import {
 	GestureResponderEvent,
 } from "react-native";
 
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackNavigatorTypes } from "../../../../App";
+
 import { DarkGradientCalendarButton } from "../components/DarkGradientCalendarButton";
 import { MinutesTextInput } from "../components/MinutesTextInput";
 import { SecondsTextInput } from "../components/SecondsTextInput";
@@ -20,7 +23,9 @@ import { formatTime } from "../utils/formatTime";
 
 import { Entypo, AntDesign } from "@expo/vector-icons";
 
-export const TimerScreen = ({ navigation }: any) => {
+export const TimerScreen = ({
+	navigation,
+}: NativeStackScreenProps<RootStackNavigatorTypes, "Timer">) => {
 	const [time, setTime] = useState({ minutes: 0, seconds: 0 });
 	const [timeLeft, setTimeLeft] = useState(0);
 	const [isRunning, setIsRunning] = useState(false);
