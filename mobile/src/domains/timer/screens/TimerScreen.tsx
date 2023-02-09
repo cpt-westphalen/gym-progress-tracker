@@ -1,23 +1,26 @@
 import { useEffect, useRef, useState } from "react";
+
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
 	View,
 	Text,
-	Image,
 	TextInput,
-	Button,
-	StyleSheet,
 	TouchableOpacity,
 	GestureResponderEvent,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
-
-import { formatTime } from "../utils/formatTime";
-import { Entypo, AntDesign } from "@expo/vector-icons";
+import { DarkGradientCalendarButton } from "../components/DarkGradientCalendarButton";
+import { MinutesTextInput } from "../components/MinutesTextInput";
+import { SecondsTextInput } from "../components/SecondsTextInput";
 
 import { globalStyles } from "../../../styles/globalStyles";
+import { timerStyles as styles } from "../styles/timer.styles";
 
-export const TimerScreen = () => {
+import { formatTime } from "../utils/formatTime";
+
+import { Entypo, AntDesign } from "@expo/vector-icons";
+
+export const TimerScreen = ({ navigation }: any) => {
 	const [time, setTime] = useState({ minutes: 0, seconds: 0 });
 	const [timeLeft, setTimeLeft] = useState(0);
 	const [isRunning, setIsRunning] = useState(false);
@@ -91,41 +94,19 @@ export const TimerScreen = () => {
 						marginHorizontal: -8,
 						marginTop: 12,
 					}}>
-					<TouchableOpacity
-						style={styles.numInput}
-						onPress={handleMinInputFocus}>
-						<TextInput
-							style={styles.textInput}
-							keyboardType='numeric'
-							onChangeText={handleMinutesInput}
-							onSubmitEditing={(event) => {
-								secRef.current?.focus();
-							}}
-							value={String(
-								time.minutes >= 10
-									? time.minutes
-									: `0${time.minutes}`
-							)}
-							ref={minRef}
-						/>
-						<Text style={styles.inputMetric}>min</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.numInput}
-						onPress={handleSecInputFocus}>
-						<TextInput
-							style={styles.textInput}
-							keyboardType='numeric'
-							onChangeText={handleSecondsInput}
-							value={String(
-								time.seconds >= 10
-									? time.seconds
-									: `0${time.seconds}`
-							)}
-							ref={secRef}
-						/>
-						<Text style={styles.inputMetric}>sec</Text>
-					</TouchableOpacity>
+					<MinutesTextInput
+						handleMinInputFocus={handleMinInputFocus}
+						handleMinutesInput={handleMinutesInput}
+						minRef={minRef}
+						secRef={secRef}
+						time={time}
+					/>
+					<SecondsTextInput
+						time={time}
+						secRef={secRef}
+						handleSecInputFocus={handleSecInputFocus}
+						handleSecondsInput={handleSecondsInput}
+					/>
 				</View>
 			</View>
 			<View
@@ -160,65 +141,9 @@ export const TimerScreen = () => {
 					)}
 				</TouchableOpacity>
 			</View>
+			<TouchableOpacity onPress={() => navigation.navigate("Home")}>
+				<DarkGradientCalendarButton />
+			</TouchableOpacity>
 		</SafeAreaView>
 	);
 };
-
-const styles = StyleSheet.create({
-	textInput: {
-		color: "#D9D9D9",
-		textAlign: "right",
-		paddingHorizontal: 8,
-		fontSize: 18,
-	},
-	inputMetric: {
-		color: "#393939",
-		fontSize: 18,
-		paddingHorizontal: 6,
-		fontWeight: "600",
-	},
-	numInput: {
-		marginHorizontal: 8,
-		flexDirection: "row",
-		justifyContent: "flex-end",
-		alignItems: "center",
-		borderColor: "#4E4E4E",
-		borderStyle: "solid",
-		borderWidth: 1,
-		borderRadius: 8,
-		width: 84,
-		height: 40,
-		overflow: "hidden",
-	},
-	counter: {
-		fontSize: 64,
-		fontWeight: "600",
-		color: "#FFF",
-	},
-	msCounter: {
-		fontSize: 32,
-		fontWeight: "600",
-		color: "#4e4e4e",
-	},
-	counterView: {
-		width: "100%",
-		borderStyle: "solid",
-		borderBottomLeftRadius: 18,
-		borderBottomRightRadius: 18,
-		borderBottomWidth: 2,
-		borderBottomColor: "#fff",
-		justifyContent: "center",
-		alignItems: "center",
-		marginVertical: 24,
-	},
-	toggleTimerButton: {
-		marginVertical: 24,
-		height: 96,
-		width: 96,
-		alignSelf: "center",
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: "#D9D9D9",
-		borderRadius: 64,
-	},
-});
