@@ -9,6 +9,9 @@ import {
 	TouchableOpacity,
 	GestureResponderEvent,
 } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import { formatTime } from "../utils/formatTime";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 
@@ -36,6 +39,7 @@ export const TimerScreen = () => {
 	}, [isRunning, timeLeft]);
 
 	useEffect(() => {
+		if (time.seconds > 59) setTime((prev) => ({ ...prev, seconds: 59 }));
 		if (!isRunning) {
 			setTimeLeft((time.minutes * 60 + time.seconds) * 1000);
 		}
@@ -56,6 +60,7 @@ export const TimerScreen = () => {
 	const handleSecondsInput = (text: string) => {
 		if (!text) text = "0";
 		const num = parseInt(text, 10);
+		if (num >= 60) setTime((prevTime) => ({ ...prevTime, seconds: 59 }));
 		if (num !== time.seconds && num >= 0) {
 			setTime((prevTime) => ({ ...prevTime, seconds: num }));
 		}
@@ -76,7 +81,7 @@ export const TimerScreen = () => {
 	const [minutes, seconds, ms] = formatTime(timeLeft);
 
 	return (
-		<View style={globalStyles.container}>
+		<SafeAreaView style={globalStyles.container}>
 			<View style={{ padding: 8 }}>
 				<Text style={globalStyles.pageTitle}>Count-down Timer</Text>
 
@@ -93,6 +98,9 @@ export const TimerScreen = () => {
 							style={styles.textInput}
 							keyboardType='numeric'
 							onChangeText={handleMinutesInput}
+							onSubmitEditing={(event) => {
+								secRef.current?.focus();
+							}}
 							value={String(
 								time.minutes >= 10
 									? time.minutes
@@ -152,7 +160,7 @@ export const TimerScreen = () => {
 					)}
 				</TouchableOpacity>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 };
 
@@ -172,7 +180,7 @@ const styles = StyleSheet.create({
 	numInput: {
 		marginHorizontal: 8,
 		flexDirection: "row",
-		justifyContent: "center",
+		justifyContent: "flex-end",
 		alignItems: "center",
 		borderColor: "#4E4E4E",
 		borderStyle: "solid",
