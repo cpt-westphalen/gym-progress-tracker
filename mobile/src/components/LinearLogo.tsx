@@ -1,4 +1,5 @@
 import { View, Text } from "react-native";
+import { themeColors } from "../styles/globalStyles";
 
 export const LinearLogo = () => {
 	return (
@@ -6,14 +7,14 @@ export const LinearLogo = () => {
 			<Text
 				style={{
 					fontSize: 12,
-					color: "#fff",
+					color: themeColors.primaryForeground,
 				}}>
 				Gym Progress{" "}
 				<Text
 					style={{
 						fontWeight: "900",
 						letterSpacing: 1,
-						color: "#fff",
+						color: themeColors.primaryForeground,
 					}}>
 					TRACKER
 				</Text>

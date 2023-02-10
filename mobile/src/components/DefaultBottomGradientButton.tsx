@@ -1,5 +1,6 @@
 import { GestureResponderEvent, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { themeColors } from "../styles/globalStyles";
 
 type DefaultBottomGradientButtonProps = {
 	onPress: (event: GestureResponderEvent) => void;
@@ -17,7 +18,7 @@ export const DefaultBottomGradientButton = ({
 		<TouchableOpacity
 			onPress={onPress}
 			style={{
-				backgroundColor: "#3CE8FF",
+				backgroundColor: themeColors.highlight,
 				borderTopLeftRadius: 8,
 				borderTopRightRadius: 8,
 			}}>
@@ -29,7 +30,10 @@ export const DefaultBottomGradientButton = ({
 					borderTopLeftRadius: 8,
 					borderTopRightRadius: 8,
 				}}
-				colors={[startColor ?? "#3CE8FF", endColor ?? "#138B84"]}
+				colors={[
+					startColor ?? themeColors.highlight,
+					endColor ?? themeColors.darkHighlight,
+				]}
 				start={{ x: 0.305, y: 0.1 }}
 				end={{ x: 0.3, y: 1 }}>
 				{children}

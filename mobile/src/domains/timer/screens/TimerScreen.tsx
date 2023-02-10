@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
 	View,
 	Text,
@@ -16,12 +15,13 @@ import { DarkGradientCalendarButton } from "../components/DarkGradientCalendarBu
 import { MinutesTextInput } from "../components/MinutesTextInput";
 import { SecondsTextInput } from "../components/SecondsTextInput";
 
-import { globalStyles } from "../../../styles/globalStyles";
+import { globalStyles, themeColors } from "../../../styles/globalStyles";
 import { timerStyles as styles } from "../styles/timer.styles";
 
 import { formatTime } from "../utils/formatTime";
 
 import { Entypo, AntDesign } from "@expo/vector-icons";
+import { LinearGradientBackground } from "../../../components/LinearGradientBackground";
 
 export const TimerScreen = ({
 	navigation,
@@ -89,66 +89,68 @@ export const TimerScreen = ({
 	const [minutes, seconds, ms] = formatTime(timeLeft);
 
 	return (
-		<SafeAreaView style={globalStyles.container}>
-			<View style={{ padding: 8 }}>
-				<Text style={globalStyles.pageTitle}>Count-down Timer</Text>
+		<LinearGradientBackground>
+			<View style={globalStyles.container}>
+				<View style={{ padding: 8 }}>
+					<Text style={globalStyles.pageTitle}>Count-down Timer</Text>
 
+					<View
+						style={{
+							flexDirection: "row",
+							marginHorizontal: -8,
+							marginTop: 12,
+						}}>
+						<MinutesTextInput
+							handleMinInputFocus={handleMinInputFocus}
+							handleMinutesInput={handleMinutesInput}
+							minRef={minRef}
+							secRef={secRef}
+							time={time}
+						/>
+						<SecondsTextInput
+							time={time}
+							secRef={secRef}
+							handleSecInputFocus={handleSecInputFocus}
+							handleSecondsInput={handleSecondsInput}
+						/>
+					</View>
+				</View>
 				<View
 					style={{
-						flexDirection: "row",
-						marginHorizontal: -8,
-						marginTop: 12,
+						flex: 1,
+						justifyContent: "flex-end",
+						marginBottom: "30%",
 					}}>
-					<MinutesTextInput
-						handleMinInputFocus={handleMinInputFocus}
-						handleMinutesInput={handleMinutesInput}
-						minRef={minRef}
-						secRef={secRef}
-						time={time}
-					/>
-					<SecondsTextInput
-						time={time}
-						secRef={secRef}
-						handleSecInputFocus={handleSecInputFocus}
-						handleSecondsInput={handleSecondsInput}
-					/>
-				</View>
-			</View>
-			<View
-				style={{
-					flex: 1,
-					justifyContent: "flex-end",
-					marginBottom: "30%",
-				}}>
-				<View style={styles.counterView}>
-					<Text style={styles.counter}>
-						{`${minutes}:${seconds}`}
-						<Text style={styles.msCounter}>{`:${ms[0]}`}</Text>
-					</Text>
-				</View>
+					<View style={styles.counterView}>
+						<Text style={styles.counter}>
+							{`${minutes}:${seconds}`}
+							<Text style={styles.msCounter}>{`:${ms[0]}`}</Text>
+						</Text>
+					</View>
 
-				<TouchableOpacity
-					style={styles.toggleTimerButton}
-					onPress={handleTimerToggle}
-					disabled={time.minutes * 60 + time.seconds <= 0}>
-					{isRunning ? (
-						<AntDesign
-							name='pause'
-							size={72}
-							color={"#040404"}
-						/>
-					) : (
-						<Entypo
-							name='controller-play'
-							size={72}
-							color='#040404'
-						/>
-					)}
+					<TouchableOpacity
+						style={styles.toggleTimerButton}
+						onPress={handleTimerToggle}
+						disabled={time.minutes * 60 + time.seconds <= 0}>
+						{isRunning ? (
+							<AntDesign
+								name='pause'
+								size={72}
+								color={themeColors.backgroundOffset}
+							/>
+						) : (
+							<Entypo
+								name='controller-play'
+								size={72}
+								color={themeColors.backgroundOffset}
+							/>
+						)}
+					</TouchableOpacity>
+				</View>
+				<TouchableOpacity onPress={() => navigation.navigate("Home")}>
+					<DarkGradientCalendarButton />
 				</TouchableOpacity>
 			</View>
-			<TouchableOpacity onPress={() => navigation.navigate("Home")}>
-				<DarkGradientCalendarButton />
-			</TouchableOpacity>
-		</SafeAreaView>
+		</LinearGradientBackground>
 	);
 };

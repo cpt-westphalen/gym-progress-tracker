@@ -1,14 +1,15 @@
 import { StyleSheet } from "react-native";
+import { themeColors } from "../../../styles/globalStyles";
 
 export const timerStyles = StyleSheet.create({
 	textInput: {
-		color: "#D9D9D9",
+		color: themeColors.secondaryForeground,
 		textAlign: "right",
 		paddingHorizontal: 8,
 		fontSize: 18,
 	},
 	inputMetric: {
-		color: "#393939",
+		color: themeColors.secondaryNeutral,
 		fontSize: 18,
 		paddingHorizontal: 6,
 		fontWeight: "600",
@@ -18,7 +19,7 @@ export const timerStyles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "flex-end",
 		alignItems: "center",
-		borderColor: "#4E4E4E",
+		borderColor: themeColors.primaryNeutral,
 		borderStyle: "solid",
 		borderWidth: 1,
 		borderRadius: 8,
@@ -29,12 +30,12 @@ export const timerStyles = StyleSheet.create({
 	counter: {
 		fontSize: 64,
 		fontWeight: "600",
-		color: "#FFF",
+		color: themeColors.primaryForeground,
 	},
 	msCounter: {
 		fontSize: 32,
 		fontWeight: "600",
-		color: "#4e4e4e",
+		color: themeColors.primaryNeutral,
 	},
 	counterView: {
 		width: "100%",
@@ -42,7 +43,7 @@ export const timerStyles = StyleSheet.create({
 		borderBottomLeftRadius: 18,
 		borderBottomRightRadius: 18,
 		borderBottomWidth: 2,
-		borderBottomColor: "#fff",
+		borderBottomColor: themeColors.primaryForeground,
 		justifyContent: "center",
 		alignItems: "center",
 		marginVertical: 24,
@@ -54,7 +55,7 @@ export const timerStyles = StyleSheet.create({
 		alignSelf: "center",
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "#D9D9D9",
+		backgroundColor: themeColors.primaryForeground,
 		borderRadius: 64,
 	},
 });
