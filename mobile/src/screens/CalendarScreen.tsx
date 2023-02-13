@@ -8,6 +8,7 @@ import { LinearGradientBackground } from "../components/LinearGradientBackground
 import { Ionicons } from "@expo/vector-icons";
 
 import { globalStyles } from "../styles/globalStyles";
+import { Calendar } from "../domains/habit-tracker/components/Calendar";
 
 export const CalendarScreen = ({
 	navigation,
@@ -15,18 +16,13 @@ export const CalendarScreen = ({
 	return (
 		<LinearGradientBackground>
 			<View style={globalStyles.container}>
-				<Text style={globalStyles.pageTitle}>Month</Text>
+				<Calendar />
+				<View style={{ alignItems: "center" }}>
+					<Text style={globalStyles.pageTitle}>
+						Did you workout today?
+					</Text>
+				</View>
 			</View>
-			<View
-				style={{
-					...globalStyles.container,
-					alignItems: "center",
-				}}>
-				<Text style={globalStyles.pageTitle}>
-					Did you workout today?
-				</Text>
-			</View>
-
 			<View style={{ flex: 1, justifyContent: "flex-end" }}>
 				<DefaultBottomGradientButton
 					onPress={() => navigation.navigate("Timer")}>
