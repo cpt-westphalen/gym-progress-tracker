@@ -17,9 +17,14 @@ export const CalendarScreen = ({
 	return (
 		<WorkoutSessionsContextProvider>
 			<LinearGradientBackground>
-				<View style={globalStyles.container}>
+				<View style={{ ...globalStyles.container, paddingTop: 32 }}>
 					<Calendar />
-					<View style={{ alignItems: "center" }}>
+					<View
+						style={{
+							flex: 1,
+							alignItems: "center",
+							justifyContent: "center",
+						}}>
 						<Text style={globalStyles.pageTitle}>
 							Did you workout today?
 						</Text>

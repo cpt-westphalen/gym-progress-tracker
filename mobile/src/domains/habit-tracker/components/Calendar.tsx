@@ -31,47 +31,12 @@ export const Calendar = () => {
 		});
 	}, [todayRef, thisMonthSessions, lastMonthSessions]);
 
-	/*
-	const startingWeekDay = useMemo(
-		() =>
-			new Date(
-				todayRef.current.getFullYear(),
-				todayRef.current.getMonth(),
-				1
-			).getDay(),
-		[todayRef.current.getMonth()]
-	); // sunday == 0
-
-	const monthDays = useMemo(
-		() =>
-			daysInMonth(
-				todayRef.current.getMonth(),
-				todayRef.current.getFullYear()
-			),
-		[todayRef.current]
-	);
-	// continue
-	const calendarDays: JSX.Element[] = useMemo(() => {
-		return (new Array(35).fill(null) as JSX.Element[]).map(
-			(item, index) => (
-				<View key={index + "-view"}>
-					<Text
-						key={index}
-						style={globalStyles.baseText}>
-						{index}
-					</Text>
-				</View>
-			)
-		);
-	}, [selectedDays, monthDays, startingWeekDay, todayRef.current]);
-	*/
-
 	return (
 		<View style={{ paddingHorizontal: 6, minHeight: 240 }}>
-			<Text style={globalStyles.pageTitle}>
+			<Text style={{ ...globalStyles.pageTitle }}>
 				{months[todayRef.current.getMonth()]}
 			</Text>
-			<View style={{ paddingHorizontal: 14 }}>
+			<View style={{ padding: 14 }}>
 				<View
 					style={{
 						flexDirection: "row",
