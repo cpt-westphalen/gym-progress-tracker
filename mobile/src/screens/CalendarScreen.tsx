@@ -18,18 +18,27 @@ export const CalendarScreen = ({
 	return (
 		<WorkoutSessionsContextProvider>
 			<LinearGradientBackground>
-				<View style={{ ...globalStyles.container, paddingTop: 32 }}>
-					<Calendar />
-					<WorkoutInput />
-				</View>
-				<View style={{ flex: 1, justifyContent: "flex-end" }}>
-					<DefaultBottomGradientButton
-						onPress={() => navigation.navigate("Timer")}>
-						<Ionicons
-							name='timer-outline'
-							size={36}
-						/>
-					</DefaultBottomGradientButton>
+				<View style={{ flex: 1, justifyContent: "space-between" }}>
+					<View
+						style={{
+							flex: 1,
+							paddingTop: 32,
+						}}>
+						<Calendar />
+						<WorkoutInput />
+					</View>
+					<View
+						style={{
+							justifyContent: "flex-end",
+						}}>
+						<DefaultBottomGradientButton
+							onPress={() => navigation.navigate("Timer")}>
+							<Ionicons
+								name='timer-outline'
+								size={36}
+							/>
+						</DefaultBottomGradientButton>
+					</View>
 				</View>
 			</LinearGradientBackground>
 		</WorkoutSessionsContextProvider>

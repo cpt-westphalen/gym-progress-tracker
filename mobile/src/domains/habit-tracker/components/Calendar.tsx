@@ -32,7 +32,7 @@ export const Calendar = () => {
 	}, [todayRef, thisMonthSessions, lastMonthSessions]);
 
 	return (
-		<View style={{ paddingHorizontal: 6, minHeight: 240 }}>
+		<View style={{ paddingHorizontal: 16, minHeight: 240 }}>
 			<Text style={{ ...globalStyles.pageTitle }}>
 				{months[todayRef.current.getMonth()]}
 			</Text>
