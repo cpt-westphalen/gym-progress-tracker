@@ -2,7 +2,7 @@ import { Workout } from "../../workout/entities/Workout";
 
 type WorkoutSessionProps = {
 	date: Date;
-	workout: Workout;
+	workout: Workout | null;
 	details: string | null;
 	userId: string | null;
 };
@@ -14,7 +14,7 @@ export class WorkoutSession {
 		return this.props.date;
 	}
 
-	get workout(): Workout {
+	get workout(): Workout | null {
 		return this.props.workout;
 	}
 
@@ -22,7 +22,7 @@ export class WorkoutSession {
 		return this.props.details ?? "";
 	}
 
-	set workout(newWorkout: Workout) {
+	set workout(newWorkout: Workout | null) {
 		this.props.workout = newWorkout;
 	}
 

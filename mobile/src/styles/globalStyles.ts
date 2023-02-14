@@ -13,7 +13,7 @@ const colors = {
 	},
 	light: {
 		white: "#FFF",
-		zinc: "D9D9D9",
+		zinc: "#D9D9D9",
 		gray: "#4E4E4E",
 	},
 };

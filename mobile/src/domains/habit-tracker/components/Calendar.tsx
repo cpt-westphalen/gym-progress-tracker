@@ -1,39 +1,35 @@
 import { FlatList, Text, View } from "react-native";
+import { useContext, useMemo, useRef } from "react";
+
+import { WorkoutSessionContext } from "../../../contexts/workoutSessionsContext/WorkoutSessionsContext";
+
+import { DayButton } from "./DayButton";
+
+import { makeCalendarWorkoutSessions } from "../services/makeCalendarWorkoutSessions";
+
+import { months, daysOfWeek } from "../utils/calendarNames";
+
 import { globalStyles } from "../../../styles/globalStyles";
-import { useRef } from "react";
-import { DayButton, DayButtonProps } from "./DayButton";
-
-const months = [
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December",
-];
-
-const daysOfWeek = [
-	"Monday",
-	"Tuesday",
-	"Wednesday",
-	"Thursday",
-	"Friday",
-	"Saturday",
-	"Sunday",
-];
-
-const daysInMonth = (month: number, year: number) => {
-	return new Date(year, month, 0).getDate();
-};
 
 export const Calendar = () => {
-	const todayRef = useRef<Date>(new Date());
+	const todayRef = useRef(new Date());
+
+	const { workoutSessions } = useContext(WorkoutSessionContext);
+
+	const thisMonth = todayRef.current.getMonth();
+	const thisMonthSessions = workoutSessions.currentYear[thisMonth];
+	const lastMonthSessions =
+		thisMonth !== 0
+			? workoutSessions.currentYear[thisMonth - 1]
+			: workoutSessions.lastYear?.[11] || null;
+
+	const thisCalendarSessions = useMemo(() => {
+		return makeCalendarWorkoutSessions({
+			todayRef: todayRef,
+			lastMonthSessions,
+			thisMonthSessions,
+		});
+	}, [todayRef, thisMonthSessions, lastMonthSessions]);
 
 	/*
 	const startingWeekDay = useMemo(
@@ -103,40 +99,21 @@ export const Calendar = () => {
 					})}
 				</View>
 				<FlatList
-					data={flatListMockData}
+					data={thisCalendarSessions}
 					numColumns={7}
-					getItemLayout={(data, index) => ({
+					getItemLayout={(_data, index) => ({
 						index,
 						length: 33,
 						offset: 4,
 					})}
 					renderItem={(data) => (
 						<DayButton
-							{...data.item}
+							workoutSession={data.item}
 							key={data.index + "-daybtn"}
 						/>
 					)}
 				/>
-				{/* calendar */}
 			</View>
 		</View>
 	);
 };
-
-let day = 0;
-const flatListMockData: DayButtonProps[] = [
-	{ date: new Date(2023, 1, day - 2), isDisabled: true },
-	{ date: new Date(2023, 1, day - 1), isDisabled: true },
-	{ date: new Date(2023, 1, day), isDisabled: true },
-	{ date: new Date(2023, 1, ++day), isDisabled: false },
-	{ date: new Date(2023, 1, ++day), isDisabled: false, isSelected: true },
-	{ date: new Date(2023, 1, ++day), isDisabled: false },
-	{ date: new Date(2023, 1, ++day), isDisabled: false },
-	{ date: new Date(2023, 1, ++day), isDisabled: false },
-	{ date: new Date(2023, 1, ++day), isDisabled: false, isSelected: true },
-	{ date: new Date(2023, 1, ++day), isDisabled: false },
-	{ date: new Date(2023, 1, ++day), isDisabled: false },
-	{ date: new Date(2023, 1, ++day), isDisabled: false },
-	{ date: new Date(2023, 1, ++day), isDisabled: false, isSelected: true },
-	{ date: new Date(2023, 1, ++day), isDisabled: false, isSelected: true },
-];

@@ -1,36 +1,55 @@
 import { StyleSheet, Text, View } from "react-native";
 import { globalStyles, themeColors } from "../../../styles/globalStyles";
-import { useMemo } from "react";
+import { WorkoutSession } from "../entities/WorkoutSession";
 
 export type DayButtonProps = {
-	date: Date;
-	isDisabled?: boolean;
-	isSelected?: boolean;
+	workoutSession: WorkoutSession;
 };
 
-const DayButtonComp = ({
-	date,
-	isDisabled = false,
-	isSelected = false,
+export const DayButton = ({
+	workoutSession: { date, details, userId, workout },
 }: DayButtonProps) => {
+	const now = new Date();
+
 	const text = date.getDate();
+
+	const isDisabled =
+		date < new Date(now.getFullYear(), now.getMonth(), 1) ||
+		date.getDate() > now.getDate() ||
+		date > new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+	const isSelected = workout !== null;
+
+	const isToday =
+		now.getFullYear() == date.getFullYear() &&
+		now.getMonth() == date.getMonth() &&
+		now.getDate() == date.getDate();
 
 	return (
 		<View
-			style={
-				isDisabled
+			style={{
+				...styles.default,
+				...(isDisabled
 					? styles.disabled
 					: isSelected
 					? styles.selected
-					: styles.container
-			}>
-			<Text style={styles.innerText}>{text || "n"}</Text>
+					: isToday
+					? styles.today
+					: {}),
+			}}>
+			<Text
+				style={{
+					...styles.innerText,
+					...(isToday ? styles.todayText : {}),
+				}}>
+				{text}
+			</Text>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
+	default: {
 		margin: 2,
 		flex: 1,
 		alignItems: "center",
@@ -38,32 +57,23 @@ const styles = StyleSheet.create({
 		minHeight: 33,
 		borderStyle: "solid",
 		borderWidth: 1,
-		borderColor: themeColors.secondaryNeutral,
 		borderRadius: 8,
+		borderColor: themeColors.secondaryNeutral,
 		backgroundColor: themeColors.backgroundOffset,
 	},
+	today: {
+		borderColor: themeColors.highlight,
+		backgroundColor: themeColors.terciaryNeutral,
+	},
+	todayText: {
+		color: themeColors.secondaryForeground,
+	},
 	disabled: {
-		margin: 2,
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-		minHeight: 33,
-		borderStyle: "solid",
-		borderWidth: 1,
 		borderColor: themeColors.terciaryNeutral,
-		borderRadius: 8,
 		backgroundColor: themeColors.primaryBackground,
 	},
 	selected: {
-		margin: 2,
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-		minHeight: 33,
-		borderStyle: "solid",
-		borderWidth: 1,
 		borderColor: themeColors.highlight,
-		borderRadius: 8,
 		backgroundColor: themeColors.highlight,
 	},
 	innerText: {
@@ -72,8 +82,3 @@ const styles = StyleSheet.create({
 		color: themeColors.secondaryNeutral,
 	},
 });
-
-export const DayButton = (props: DayButtonProps) =>
-	useMemo(() => {
-		return <DayButtonComp {...props} />;
-	}, [props.date, props.isDisabled, props.isSelected]);
