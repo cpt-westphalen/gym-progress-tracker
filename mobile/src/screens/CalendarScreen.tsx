@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { RootStackNavigatorTypes } from "../../App";
@@ -10,6 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { globalStyles } from "../styles/globalStyles";
 import { WorkoutSessionsContextProvider } from "../contexts/workoutSessionsContext/WorkoutSessionsContext";
+import { WorkoutInput } from "../domains/workout/components/WorkoutInput";
 
 export const CalendarScreen = ({
 	navigation,
@@ -19,16 +20,7 @@ export const CalendarScreen = ({
 			<LinearGradientBackground>
 				<View style={{ ...globalStyles.container, paddingTop: 32 }}>
 					<Calendar />
-					<View
-						style={{
-							flex: 1,
-							alignItems: "center",
-							justifyContent: "center",
-						}}>
-						<Text style={globalStyles.pageTitle}>
-							Did you workout today?
-						</Text>
-					</View>
+					<WorkoutInput />
 				</View>
 				<View style={{ flex: 1, justifyContent: "flex-end" }}>
 					<DefaultBottomGradientButton
