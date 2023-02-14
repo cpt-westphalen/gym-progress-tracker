@@ -1,15 +1,17 @@
-import {
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
+
+import { Picker } from "@react-native-picker/picker";
+
 import { globalStyles, themeColors } from "../../../styles/globalStyles";
 
 import { FontAwesome } from "@expo/vector-icons";
 
 export function WorkoutInput({}) {
+	const [selectedWorkout, setSelectedWorkout] = useState();
+
+	// TODO: useContext for dispatching add_workout
+
 	return (
 		<View style={styles.container}>
 			<Text style={{ ...globalStyles.pageTitle }}>
@@ -17,6 +19,7 @@ export function WorkoutInput({}) {
 			</Text>
 			<View style={styles.inputContainer}>
 				<YesButton />
+				<View></View>
 			</View>
 		</View>
 	);
