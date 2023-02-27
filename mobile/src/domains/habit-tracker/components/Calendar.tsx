@@ -11,16 +11,7 @@ import { months, daysOfWeek } from "../utils/calendarNames";
 
 import { globalStyles } from "../../../styles/globalStyles";
 
-import { WorkoutSession } from "../entities/WorkoutSession";
-
-const isFromSameMonth = (date: Date) => {
-	return (session: WorkoutSession) => {
-		return (
-			session.date.getFullYear() === date.getFullYear() &&
-			session.date.getMonth() === date.getMonth()
-		);
-	};
-};
+import { workoutSessionIsFromSameMonth } from "../utils/workoutSessionIsFromSameMonth";
 
 export const Calendar = () => {
 	const today = new Date();
@@ -28,10 +19,12 @@ export const Calendar = () => {
 	const { workoutSessions } = useContext(WorkoutSessionContext);
 
 	const thisMonthSessions =
-		workoutSessions.filter(isFromSameMonth(today)) ?? null;
+		workoutSessions.filter(workoutSessionIsFromSameMonth(today)) ?? null;
 
 	const lastMonthSessions = workoutSessions.filter(
-		isFromSameMonth(new Date(today.getFullYear(), today.getMonth() - 1, 1))
+		workoutSessionIsFromSameMonth(
+			new Date(today.getFullYear(), today.getMonth() - 1, 1)
+		)
 	);
 
 	const thisCalendarSessions = useMemo(() => {
