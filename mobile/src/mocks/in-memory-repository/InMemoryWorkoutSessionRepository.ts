@@ -1,5 +1,6 @@
 import { WorkoutSession } from "../../domains/habit-tracker/entities/WorkoutSession";
 import { WorkoutSessionRepository } from "../../domains/habit-tracker/repositories/WorkoutSessionRepository";
+import { isSameDate } from "../../domains/habit-tracker/utils/isSameDate";
 
 export class InMemoryWorkoutSessionRepository
 	implements WorkoutSessionRepository
@@ -10,7 +11,7 @@ export class InMemoryWorkoutSessionRepository
 		this.db = initialData ?? [];
 	}
 
-	public getAll(userId: string | undefined): WorkoutSession[] {
+	public getAll(userId?: string): WorkoutSession[] {
 		const sortCallback = (a: WorkoutSession, b: WorkoutSession) =>
 			a.date < b.date ? 0 : 1;
 
@@ -26,10 +27,7 @@ export class InMemoryWorkoutSessionRepository
 	}
 	public remove(workoutSession: WorkoutSession): void {
 		this.db = this.db.filter(
-			(w) =>
-				w.date.getFullYear() == workoutSession.date.getFullYear() &&
-				w.date.getMonth() == workoutSession.date.getMonth() &&
-				w.date.getDate() == workoutSession.date.getDate()
+			(w) => !isSameDate(w.date, workoutSession.date)
 		);
 	}
 }
