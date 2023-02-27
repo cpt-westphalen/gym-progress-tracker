@@ -3,6 +3,7 @@ import { workoutSessionIsFromSameMonth } from "./workoutSessionIsFromSameMonth";
 import { isSameDate } from "./isSameDate";
 import { WorkoutSession } from "../entities/WorkoutSession";
 import { Workout } from "../../workout/entities/Workout";
+import { makeCalendarWorkoutSessions } from "./makeCalendarWorkoutSessions";
 
 describe("isSameDate utils", () => {
 	it("should return false if two dates provided are different", () => {
@@ -64,5 +65,56 @@ describe("isFromSameMonth utils", () => {
 			workout: {} as Workout,
 		});
 		expect(fn(workoutSession)).toBe(false);
+	});
+});
+
+describe("makeCalendarSessions utils", () => {
+	it("should always return an array of 35 items", () => {
+		const days = makeCalendarWorkoutSessions({
+			lastMonthSessions: null,
+			thisMonthSessions: null,
+		});
+		expect(days).toHaveLength(35);
+	});
+	it("should return an WorkoutSession[]", () => {
+		const days = makeCalendarWorkoutSessions({
+			lastMonthSessions: null,
+			thisMonthSessions: null,
+		});
+		expect(days.every((w) => w instanceof WorkoutSession)).toBe(true);
+	});
+	it("should return array which contains provided thisMonthSessions", () => {
+		const today = new Date();
+		const ws = new WorkoutSession({
+			date: new Date(today.getFullYear(), today.getMonth(), 1),
+			details: "test",
+			userId: null,
+			workout: {} as Workout,
+		});
+		const ws2 = new WorkoutSession({
+			date: new Date(today.getFullYear(), today.getMonth(), 2),
+			details: "test 2",
+			userId: null,
+			workout: {} as Workout,
+		});
+		const ws3 = new WorkoutSession({
+			date: new Date(today.getFullYear(), today.getMonth(), 3),
+			details: "test 3",
+			userId: null,
+			workout: {} as Workout,
+		});
+		const days = makeCalendarWorkoutSessions({
+			lastMonthSessions: [],
+			thisMonthSessions: [ws, ws2, ws3],
+		});
+
+		expect(
+			days.filter(
+				(ws) =>
+					ws.details == "test" ||
+					ws.details == "test 2" ||
+					ws.details == "test 3"
+			)
+		).toHaveLength(3);
 	});
 });
