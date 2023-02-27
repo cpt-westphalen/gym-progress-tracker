@@ -1,11 +1,11 @@
 import { FlatList, Text, View } from "react-native";
-import { useContext, useMemo, useRef } from "react";
+import { useContext, useMemo } from "react";
 
 import { WorkoutSessionContext } from "../../../contexts/workoutSessionsContext/WorkoutSessionsContext";
 
 import { DayButton } from "./DayButton";
 
-import { makeCalendarWorkoutSessions } from "../services/makeCalendarWorkoutSessions";
+import { makeCalendarWorkoutSessions } from "../utils/makeCalendarWorkoutSessions";
 
 import { months, daysOfWeek } from "../utils/calendarNames";
 
