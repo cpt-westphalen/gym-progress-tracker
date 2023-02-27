@@ -21,11 +21,12 @@ export const Calendar = () => {
 	const thisMonthSessions =
 		workoutSessions.filter(workoutSessionIsFromSameMonth(today)) ?? null;
 
-	const lastMonthSessions = workoutSessions.filter(
-		workoutSessionIsFromSameMonth(
-			new Date(today.getFullYear(), today.getMonth() - 1, 1)
-		)
-	);
+	const lastMonthSessions =
+		workoutSessions.filter(
+			workoutSessionIsFromSameMonth(
+				new Date(today.getFullYear(), today.getMonth() - 1, 1)
+			)
+		) ?? null;
 
 	const thisCalendarSessions = useMemo(() => {
 		return makeCalendarWorkoutSessions({

@@ -1,8 +1,8 @@
 import { WorkoutSession } from "../entities/WorkoutSession";
 
 type MakeCalendarWorkoutSessionsProps = {
-	lastMonthSessions: (WorkoutSession | null)[] | null;
-	thisMonthSessions: (WorkoutSession | null)[] | null;
+	lastMonthSessions: WorkoutSession[] | null;
+	thisMonthSessions: WorkoutSession[] | null;
 };
 export function makeCalendarWorkoutSessions({
 	lastMonthSessions,
@@ -76,7 +76,9 @@ export function makeCalendarWorkoutSessions({
 					workout: null,
 				});
 			}
-			const daySession = thisMonthSessions[index];
+			const daySession = thisMonthSessions.find(
+				(s) => s.date.getDate() == index + 1
+			);
 			if (daySession == null) {
 				return new WorkoutSession({
 					date: new Date(thisYear, thisMonth, index + 1),

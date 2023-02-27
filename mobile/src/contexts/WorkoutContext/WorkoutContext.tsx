@@ -1,4 +1,4 @@
-import { Children, createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { Workout } from "../../domains/workout/entities/Workout";
 import { MuscleGroup } from "../../domains/workout/entities/MuscleGroup";
 import { ReduceWorkoutActionType, reduceWorkout } from "./reduceWorkout";
@@ -29,6 +29,10 @@ export const WorkoutContextProvider = ({
 		reduceWorkout,
 		initialWorkoutContext
 	);
+
+	useEffect(() => {
+		workoutDispatch({ type: "fetch_workout_data", payload: null });
+	}, []);
 
 	return (
 		<WorkoutDispatch.Provider value={workoutDispatch}>

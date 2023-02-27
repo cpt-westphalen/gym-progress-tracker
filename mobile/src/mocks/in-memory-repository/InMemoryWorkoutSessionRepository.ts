@@ -23,6 +23,13 @@ export class InMemoryWorkoutSessionRepository
 		return this.db.sort(sortCallback);
 	}
 	public save(workoutSession: WorkoutSession): void {
+		const index: number = this.db.findIndex((v) =>
+			isSameDate(v.date, workoutSession.date)
+		);
+		if (index > -1) {
+			this.db[index] = workoutSession;
+			return;
+		}
 		this.db.push(workoutSession);
 	}
 	public remove(workoutSession: WorkoutSession): void {

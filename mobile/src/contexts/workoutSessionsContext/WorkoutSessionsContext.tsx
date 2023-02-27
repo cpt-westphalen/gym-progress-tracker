@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { WorkoutSession } from "../../domains/habit-tracker/entities/WorkoutSession";
 import {
 	WorkoutSessionsActionType,
@@ -29,6 +29,13 @@ export const WorkoutSessionsContextProvider = ({
 		workoutSessionsReducer,
 		initialWorkoutSessionContext
 	);
+
+	useEffect(() => {
+		workoutSessionsDispatch({
+			type: "fetch_workout_sessions",
+			payload: null,
+		});
+	}, []);
 
 	return (
 		<WorkoutSessionsDispatch.Provider value={workoutSessionsDispatch}>

@@ -10,7 +10,10 @@ import { WorkoutSessionProps } from "../../domains/habit-tracker/entities/Workou
 import { WorkoutSessionContextType } from "./WorkoutSessionsContext";
 
 export type WorkoutSessionsActionType = {
-	type: "add_workout_session" | "remove_workout_session";
+	type:
+		| "add_workout_session"
+		| "remove_workout_session"
+		| "fetch_workout_sessions";
 	payload: WorkoutSessionProps | null;
 };
 
@@ -18,13 +21,15 @@ export const workoutSessionsReducer: Reducer<
 	WorkoutSessionContextType,
 	WorkoutSessionsActionType
 > = (prevState, action) => {
-	const now = new Date();
-	const thisMonth = now.getMonth();
-	const thisYearWorkoutSessions = prevState.workoutSessions.filter(
-		(session) => session.date >= new Date(now.getFullYear(), 0, 1)
-	);
-
 	switch (action.type) {
+		case "fetch_workout_sessions": {
+			const getWorkoutSessions = new GetWorkoutSessions(
+				repositories.workoutSessions
+			);
+			const workoutSessions = getWorkoutSessions.exec();
+			return { ...prevState, workoutSessions };
+		}
+
 		case "add_workout_session": {
 			if (action.payload == null) return prevState;
 
@@ -44,7 +49,7 @@ export const workoutSessionsReducer: Reducer<
 
 			return {
 				...prevState,
-				workoutSessions,
+				workoutSessions: [...workoutSessions],
 			};
 		}
 

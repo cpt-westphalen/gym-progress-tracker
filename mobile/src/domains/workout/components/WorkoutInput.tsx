@@ -6,7 +6,7 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 import { Picker } from "@react-native-picker/picker";
 
@@ -15,32 +15,73 @@ import { globalStyles, themeColors } from "../../../styles/globalStyles";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import { WorkoutSessionsDispatch } from "../../../contexts/workoutSessionsContext/WorkoutSessionsContext";
-import { Workout } from "../entities/Workout";
+import {
+	WorkoutSessionContext,
+	WorkoutSessionsDispatch,
+} from "../../../contexts/workoutSessionsContext/WorkoutSessionsContext";
+
+import { WorkoutContext } from "../../../contexts/WorkoutContext/WorkoutContext";
+import { isSameDate } from "../../habit-tracker/utils/isSameDate";
 
 export function WorkoutInput({}) {
 	const [showWorkoutPicker, setShowWorkoutPicker] = useState(false);
-	const [selectedWorkout, setSelectedWorkout] = useState<string>();
+	const [selectedWorkout, setSelectedWorkout] = useState<string | null>(null);
 
+	const { workouts } = useContext(WorkoutContext);
+
+	const { workoutSessions } = useContext(WorkoutSessionContext);
 	const workoutSessionsDispatcher = useContext(WorkoutSessionsDispatch);
+
+	const todaySession = useMemo(
+		() =>
+			Boolean(
+				workoutSessions.find((w) => isSameDate(new Date(), w.date))
+			),
+		[workoutSessions]
+	);
 
 	useEffect(() => {
 		if (!showWorkoutPicker) {
-			setSelectedWorkout(undefined);
+			setSelectedWorkout(null);
 		}
-	}, [showWorkoutPicker, selectedWorkout]);
+	}, [showWorkoutPicker]);
+
+	useEffect(() => {
+		if (showWorkoutPicker) {
+			setShowWorkoutPicker(false);
+		}
+	}, [todaySession]);
 
 	function handlePressYesButton() {
-		if (showWorkoutPicker && selectedWorkout && workoutSessionsDispatcher) {
-			// workoutSessionsDispatcher({type: 'add_workoutSession', payload: selectedWorkout}); // make this work!!!
+		if (!showWorkoutPicker) {
+			if (workouts.length > 0) setShowWorkoutPicker(true);
 		}
-		setShowWorkoutPicker((prev) => !prev);
+		if (
+			showWorkoutPicker &&
+			selectedWorkout !== null &&
+			workoutSessionsDispatcher
+		) {
+			const workout = workouts.find((w) => w.title == selectedWorkout);
+			if (workout) {
+				workoutSessionsDispatcher({
+					type: "add_workout_session",
+					payload: {
+						date: new Date(),
+						details: null,
+						userId: null,
+						workout,
+					},
+				});
+			}
+		}
 	}
 
 	return (
 		<View style={styles.container}>
 			<Text style={{ ...globalStyles.pageTitle }}>
-				Did you workout today?
+				{todaySession
+					? "Change today's session?"
+					: "Did you workout today?"}
 			</Text>
 			<View
 				style={{
@@ -74,13 +115,16 @@ export function WorkoutInput({}) {
 									onValueChange={(itemValue, itemIndex) =>
 										setSelectedWorkout(itemValue)
 									}>
+									{workouts.map((workout) => (
+										<Picker.Item
+											key={workout.id}
+											label={workout.title}
+											value={workout.title}
+										/>
+									))}
 									<Picker.Item
-										label='Workout A'
-										value='A'
-									/>
-									<Picker.Item
-										label='Workout B'
-										value='B'
+										label='Select Workout...'
+										value={null}
 									/>
 								</Picker>
 							</View>
@@ -122,21 +166,29 @@ export function WorkoutInput({}) {
 					<TouchableOpacity
 						style={{
 							...styles.yesBtn,
-							...(showWorkoutPicker
+							...(todaySession
+								? { borderColor: themeColors.highlight }
+								: selectedWorkout
 								? {
 										borderColor: themeColors.highlight,
 										backgroundColor:
 											themeColors.terciaryNeutral,
 								  }
-								: {}),
+								: {
+										borderColor: themeColors.primaryNeutral,
+								  }),
 						}}
 						onPress={handlePressYesButton}>
 						<FontAwesome
 							name='check'
 							size={24}
 							color={
-								selectedWorkout
+								todaySession
 									? themeColors.highlight
+									: showWorkoutPicker
+									? selectedWorkout
+										? themeColors.highlight
+										: themeColors.primaryNeutral
 									: themeColors.primaryForeground
 							}
 						/>

@@ -51,6 +51,17 @@ describe("In-Memo Workout Session Repository", () => {
 		repo.save(ws2);
 		expect(repo).toHaveProperty("db", [ws1, ws2]);
 	});
+	it("should save workoutSession as update if same date is on db", () => {
+		const repo = new InMemoryWorkoutSessionRepository([ws1, ws2]);
+		const ws3 = new WorkoutSession({
+			date: ws2.date,
+			details: "Test",
+			userId: null,
+			workout: {} as Workout,
+		});
+		repo.save(ws3);
+		expect(repo).toHaveProperty("db", [ws1, ws3]);
+	});
 	it("should remove workout session from db property", () => {
 		const repo = new InMemoryWorkoutSessionRepository([ws1, ws2]);
 		repo.remove(ws1);

@@ -8,39 +8,41 @@ import { Calendar } from "../domains/habit-tracker/components/Calendar";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { globalStyles } from "../styles/globalStyles";
 import { WorkoutSessionsContextProvider } from "../contexts/workoutSessionsContext/WorkoutSessionsContext";
 import { WorkoutInput } from "../domains/workout/components/WorkoutInput";
+import { WorkoutContextProvider } from "../contexts/WorkoutContext/WorkoutContext";
 
 export const CalendarScreen = ({
 	navigation,
 }: NativeStackScreenProps<RootStackNavigatorTypes, "Calendar">) => {
 	return (
-		<WorkoutSessionsContextProvider>
-			<LinearGradientBackground>
-				<View style={{ flex: 1, justifyContent: "space-between" }}>
-					<View
-						style={{
-							flex: 1,
-							paddingTop: 32,
-						}}>
-						<Calendar />
-						<WorkoutInput />
-					</View>
-					<View
-						style={{
-							justifyContent: "flex-end",
-						}}>
-						<DefaultBottomGradientButton
-							onPress={() => navigation.navigate("Timer")}>
-							<Ionicons
-								name='timer-outline'
-								size={36}
-							/>
-						</DefaultBottomGradientButton>
-					</View>
+		<LinearGradientBackground>
+			<View style={{ flex: 1, justifyContent: "space-between" }}>
+				<View
+					style={{
+						flex: 1,
+						paddingTop: 32,
+					}}>
+					<WorkoutContextProvider>
+						<WorkoutSessionsContextProvider>
+							<Calendar />
+							<WorkoutInput />
+						</WorkoutSessionsContextProvider>
+					</WorkoutContextProvider>
 				</View>
-			</LinearGradientBackground>
-		</WorkoutSessionsContextProvider>
+				<View
+					style={{
+						justifyContent: "flex-end",
+					}}>
+					<DefaultBottomGradientButton
+						onPress={() => navigation.navigate("Timer")}>
+						<Ionicons
+							name='timer-outline'
+							size={36}
+						/>
+					</DefaultBottomGradientButton>
+				</View>
+			</View>
+		</LinearGradientBackground>
 	);
 };

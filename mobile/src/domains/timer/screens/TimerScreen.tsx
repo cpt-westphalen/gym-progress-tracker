@@ -147,7 +147,8 @@ export const TimerScreen = ({
 						)}
 					</TouchableOpacity>
 				</View>
-				<TouchableOpacity onPress={() => navigation.navigate("Home")}>
+				<TouchableOpacity
+					onPress={() => navigation.navigate("Calendar")}>
 					<DarkGradientCalendarButton />
 				</TouchableOpacity>
 			</View>
