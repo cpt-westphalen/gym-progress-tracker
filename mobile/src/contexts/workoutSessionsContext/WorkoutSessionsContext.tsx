@@ -1,32 +1,24 @@
 import { createContext, useReducer } from "react";
 import { WorkoutSession } from "../../domains/habit-tracker/entities/WorkoutSession";
-import { ActionType, workoutSessionsReducer } from "./workoutSessionsReducer";
+import {
+	WorkoutSessionsActionType,
+	workoutSessionsReducer,
+} from "./reduceWorkoutSessions";
 
 export type WorkoutSessionContextType = {
-	workoutSessions: {
-		currentYear: YearSessions;
-		lastYear?: YearSessions;
-	};
+	workoutSessions: WorkoutSession[];
 };
 
-type YearSessions = MonthSessions[];
-
-type MonthSessions = DaySession[] | null;
-
-type DaySession = WorkoutSession | null;
-
-export const initialWorkoutSessionContextValue: WorkoutSessionContextType = {
-	workoutSessions: {
-		currentYear: new Array(12).fill(null) as YearSessions,
-	},
+export const initialWorkoutSessionContext: WorkoutSessionContextType = {
+	workoutSessions: [],
 };
 
 export const WorkoutSessionContext = createContext<WorkoutSessionContextType>(
-	initialWorkoutSessionContextValue
+	initialWorkoutSessionContext
 );
 
 export const WorkoutSessionsDispatch =
-	createContext<React.Dispatch<ActionType> | null>(null);
+	createContext<React.Dispatch<WorkoutSessionsActionType> | null>(null);
 
 export const WorkoutSessionsContextProvider = ({
 	children,
@@ -35,7 +27,7 @@ export const WorkoutSessionsContextProvider = ({
 }) => {
 	const [workoutSessionsState, workoutSessionsDispatch] = useReducer(
 		workoutSessionsReducer,
-		initialWorkoutSessionContextValue
+		initialWorkoutSessionContext
 	);
 
 	return (

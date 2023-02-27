@@ -1,6 +1,6 @@
 import { MuscleGroup } from "./MuscleGroup";
 
-type WorkoutProps = {
+export type WorkoutProps = {
 	id: string;
 	title: string;
 	muscleGroups: MuscleGroup[];

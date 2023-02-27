@@ -11,30 +11,40 @@ import { months, daysOfWeek } from "../utils/calendarNames";
 
 import { globalStyles } from "../../../styles/globalStyles";
 
+import { WorkoutSession } from "../entities/WorkoutSession";
+
+const isFromSameMonth = (date: Date) => {
+	return (session: WorkoutSession) => {
+		return (
+			session.date.getFullYear() === date.getFullYear() &&
+			session.date.getMonth() === date.getMonth()
+		);
+	};
+};
+
 export const Calendar = () => {
-	const todayRef = useRef(new Date());
+	const today = new Date();
 
 	const { workoutSessions } = useContext(WorkoutSessionContext);
 
-	const thisMonth = todayRef.current.getMonth();
-	const thisMonthSessions = workoutSessions.currentYear[thisMonth];
-	const lastMonthSessions =
-		thisMonth !== 0
-			? workoutSessions.currentYear[thisMonth - 1]
-			: workoutSessions.lastYear?.[11] || null;
+	const thisMonthSessions =
+		workoutSessions.filter(isFromSameMonth(today)) ?? null;
+
+	const lastMonthSessions = workoutSessions.filter(
+		isFromSameMonth(new Date(today.getFullYear(), today.getMonth() - 1, 1))
+	);
 
 	const thisCalendarSessions = useMemo(() => {
 		return makeCalendarWorkoutSessions({
-			todayRef: todayRef,
 			lastMonthSessions,
 			thisMonthSessions,
 		});
-	}, [todayRef, thisMonthSessions, lastMonthSessions]);
+	}, [thisMonthSessions, lastMonthSessions]);
 
 	return (
 		<View style={{ paddingHorizontal: 16, minHeight: 240 }}>
 			<Text style={{ ...globalStyles.pageTitle }}>
-				{months[todayRef.current.getMonth()]}
+				{months[today.getMonth()]}
 			</Text>
 			<View style={{ padding: 14 }}>
 				<View

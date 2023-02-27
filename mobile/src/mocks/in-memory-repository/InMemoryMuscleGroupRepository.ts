@@ -4,7 +4,7 @@ import { MuscleGroupRepository } from "../../domains/workout/repositories/Muscle
 export class InMemoryMuscleGroupRepository implements MuscleGroupRepository {
 	private db: MuscleGroup[];
 
-	constructor(initialData: MuscleGroup[] | undefined) {
+	constructor(initialData?: MuscleGroup[]) {
 		this.db = initialData ?? [];
 	}
 

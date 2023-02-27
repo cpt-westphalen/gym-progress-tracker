@@ -1,6 +1,6 @@
 import { Workout } from "../../workout/entities/Workout";
 
-type WorkoutSessionProps = {
+export type WorkoutSessionProps = {
 	date: Date;
 	workout: Workout | null;
 	details: string | null;

@@ -1,4 +1,4 @@
-type MuscleGroupProps = {
+export type MuscleGroupProps = {
 	name: string;
 	icon: string | null;
 };

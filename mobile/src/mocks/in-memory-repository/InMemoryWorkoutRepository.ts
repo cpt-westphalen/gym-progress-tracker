@@ -4,7 +4,7 @@ import { WorkoutRepository } from "../../domains/workout/repositories/WorkoutRep
 export class InMemoryWorkoutRepository implements WorkoutRepository {
 	private db: Workout[];
 
-	constructor(initialData: Workout[]) {
+	constructor(initialData?: Workout[]) {
 		this.db = initialData ?? [];
 	}
 

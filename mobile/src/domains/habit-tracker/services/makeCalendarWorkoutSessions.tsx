@@ -1,17 +1,17 @@
 import { WorkoutSession } from "../entities/WorkoutSession";
 
 type MakeCalendarWorkoutSessionsProps = {
-	todayRef: React.MutableRefObject<Date>;
 	lastMonthSessions: (WorkoutSession | null)[] | null;
 	thisMonthSessions: (WorkoutSession | null)[] | null;
 };
 export function makeCalendarWorkoutSessions({
-	todayRef,
 	lastMonthSessions,
 	thisMonthSessions,
 }: MakeCalendarWorkoutSessionsProps) {
-	const thisYear = todayRef.current.getFullYear();
-	const thisMonth = todayRef.current.getMonth();
+	const today = new Date();
+
+	const thisYear = today.getFullYear();
+	const thisMonth = today.getMonth();
 
 	const startingWeekDayOffset = new Date(thisYear, thisMonth, 1).getDay();
 	const endOfMonthOffset =

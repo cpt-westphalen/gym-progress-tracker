@@ -6,12 +6,20 @@ export class InMemoryWorkoutSessionRepository
 {
 	private db: WorkoutSession[];
 
-	constructor(initialData: WorkoutSession[]) {
+	constructor(initialData?: WorkoutSession[]) {
 		this.db = initialData ?? [];
 	}
 
 	public getAll(userId: string | undefined): WorkoutSession[] {
-		return this.db.sort((a, b) => (a.date < b.date ? 0 : 1));
+		const sortCallback = (a: WorkoutSession, b: WorkoutSession) =>
+			a.date < b.date ? 0 : 1;
+
+		if (userId)
+			return this.db
+				.filter((session) => session.userId == userId)
+				.sort(sortCallback);
+
+		return this.db.sort(sortCallback);
 	}
 	public save(workoutSession: WorkoutSession): void {
 		this.db.push(workoutSession);
