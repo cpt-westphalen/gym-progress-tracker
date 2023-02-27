@@ -15,6 +15,6 @@ export class InMemoryMuscleGroupRepository implements MuscleGroupRepository {
 		this.db.push(muscleGroup);
 	}
 	public remove(muscleGroup: MuscleGroup): void {
-		this.db.filter((m) => m.name != muscleGroup.name);
+		this.db = this.db.filter((m) => m.name != muscleGroup.name);
 	}
 }
