@@ -22,10 +22,12 @@ import {
 
 import { WorkoutContext } from "../../../contexts/WorkoutContext/WorkoutContext";
 import { isSameDate } from "../../habit-tracker/utils/isSameDate";
+import { NewWorkoutModal } from "./NewWorkoutModal";
 
 export function WorkoutInput({}) {
 	const [showWorkoutPicker, setShowWorkoutPicker] = useState(false);
 	const [selectedWorkout, setSelectedWorkout] = useState<string | null>(null);
+	const [showNewWorkoutModal, setShowNewWorkoutModal] = useState(false);
 
 	const { workouts } = useContext(WorkoutContext);
 
@@ -47,7 +49,7 @@ export function WorkoutInput({}) {
 	}, [showWorkoutPicker]);
 
 	useEffect(() => {
-		if (showWorkoutPicker) {
+		if (todaySession && showWorkoutPicker) {
 			setShowWorkoutPicker(false);
 		}
 	}, [todaySession]);
@@ -55,6 +57,7 @@ export function WorkoutInput({}) {
 	function handlePressYesButton() {
 		if (!showWorkoutPicker) {
 			if (workouts.length > 0) setShowWorkoutPicker(true);
+			else setShowNewWorkoutModal(true);
 		}
 		if (
 			showWorkoutPicker &&
@@ -73,6 +76,7 @@ export function WorkoutInput({}) {
 					},
 				});
 			}
+			setShowWorkoutPicker(false);
 		}
 	}
 
@@ -128,7 +132,8 @@ export function WorkoutInput({}) {
 									/>
 								</Picker>
 							</View>
-							<View
+							<TouchableOpacity
+								onPress={() => setShowNewWorkoutModal(true)}
 								style={{
 									flexDirection: "row",
 									alignSelf: "center",
@@ -153,7 +158,7 @@ export function WorkoutInput({}) {
 									size={24}
 									color={themeColors.secondaryNeutral}
 								/>
-							</View>
+							</TouchableOpacity>
 						</View>
 					</View>
 				)}
@@ -195,6 +200,14 @@ export function WorkoutInput({}) {
 					</TouchableOpacity>
 				</View>
 			</View>
+			{showNewWorkoutModal && (
+				<NewWorkoutModal
+					onClose={() => {
+						setShowNewWorkoutModal(false);
+						setShowWorkoutPicker(true);
+					}}
+				/>
+			)}
 		</View>
 	);
 }
