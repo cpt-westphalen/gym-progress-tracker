@@ -5,7 +5,7 @@ import { InMemoryWorkoutRepository } from "../mocks/in-memory-repository/InMemor
 import { InMemoryWorkoutSessionRepository } from "../mocks/in-memory-repository/InMemoryWorkoutSessionRepository";
 
 export const repositories = {
-	workouts: new InMemoryWorkoutRepository([workoutA, workoutB]),
+	workouts: new InMemoryWorkoutRepository(),
 	workoutSessions: new InMemoryWorkoutSessionRepository(),
 	muscleGroups: new InMemoryMuscleGroupRepository([
 		chest,
